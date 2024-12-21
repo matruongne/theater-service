@@ -37,10 +37,6 @@ const ScreenSeat = sequelize.define('ScreenSeat', {
 		allowNull: false,
 		defaultValue: 'NORMAL',
 	},
-	showtime_id: {
-		type: DataTypes.STRING(24),
-		allowNull: true,
-	},
 	status: {
 		type: DataTypes.ENUM('available', 'reserved', 'occupied'),
 		defaultValue: 'available',
@@ -60,12 +56,33 @@ const updateTotalSeats = async screenId => {
 	}
 }
 
+const updateAvailableSeats = async screenId => {
+	try {
+		const availableSeats = await ScreenSeat.count({
+			where: {
+				screen_id: screenId,
+				status: 'available',
+			},
+		})
+
+		await Screen.update({ available_seats: availableSeats }, { where: { screen_id: screenId } })
+	} catch (error) {
+		console.error('Error updating available seats:', error.message)
+	}
+}
+
 ScreenSeat.afterBulkCreate(async (seats, options) => {
 	await updateTotalSeats(seats[0].screen_id)
+	await updateAvailableSeats(seats[0].screen_id)
+})
+
+ScreenSeat.afterUpdate(async (seat, options) => {
+	await updateAvailableSeats(seat.screen_id)
 })
 
 ScreenSeat.afterDestroy(async (seat, options) => {
 	await updateTotalSeats(seat.screen_id)
+	await updateAvailableSeats(seat.screen_id)
 })
 
 module.exports = ScreenSeat

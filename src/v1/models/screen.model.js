@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../configs/databases/init.mysql')
 const { v4: uuidv4 } = require('uuid')
-const Theater = require('./theater.model')
 
 const Screen = sequelize.define('Screen', {
 	screen_id: {
@@ -12,19 +11,19 @@ const Screen = sequelize.define('Screen', {
 	theater_id: {
 		type: DataTypes.STRING(24),
 		allowNull: false,
-		references: {
-			model: Theater,
-			key: 'theater_id',
-		},
 	},
 	screen_name: { type: DataTypes.STRING(50) },
 	total_seats: {
 		type: DataTypes.INTEGER,
 		defaultValue: 0,
 	},
+	available_seats: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 	showtime_id: {
 		type: DataTypes.STRING(24),
-		allowNull: true,
+		allowNull: false,
 	},
 })
 
