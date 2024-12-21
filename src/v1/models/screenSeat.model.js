@@ -1,4 +1,4 @@
-const { DataTypes, json } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const { sequelize } = require('../configs/databases/init.mysql')
 const { v4: uuidv4 } = require('uuid')
 const Screen = require('./screen.model')
@@ -36,6 +36,18 @@ const ScreenSeat = sequelize.define('ScreenSeat', {
 		type: DataTypes.ENUM('NORMAL', 'VIP', 'DUPLEX', 'CHILD'),
 		allowNull: false,
 		defaultValue: 'NORMAL',
+	},
+	showtime_id: {
+		type: DataTypes.STRING(24),
+		allowNull: true,
+	},
+	status: {
+		type: DataTypes.ENUM('available', 'reserved', 'occupied'),
+		defaultValue: 'available',
+	},
+	booking_id: {
+		type: DataTypes.STRING(24),
+		allowNull: true,
 	},
 })
 
