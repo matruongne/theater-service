@@ -22,6 +22,10 @@ const Screen = sequelize.define('Screen', {
 		type: DataTypes.INTEGER,
 		defaultValue: 0,
 	},
+	showtime_id: {
+		type: DataTypes.STRING(24),
+		allowNull: true,
+	},
 })
 
 module.exports = Screen
