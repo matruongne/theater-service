@@ -23,7 +23,7 @@ const Screen = sequelize.define('Screen', {
 	},
 	showtime_id: {
 		type: DataTypes.STRING(24),
-		allowNull: false,
+		allowNull: true,
 	},
 })
 
